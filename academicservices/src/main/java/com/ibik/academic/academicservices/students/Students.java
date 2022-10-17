@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+
 @Entity
 @Table(name = "students")
 
@@ -21,21 +24,24 @@ public class Students implements Serializable {
     private int Id;
 
     @Column(length = 15)
+    @NotEmpty(message = "NPM is required")
     private String npm;
 
     @Column(length = 10)
+    @NotEmpty(message = "Firstname is required")
     private String firstname;
 
     @Column(length = 10)
     private String middlename;
 
     @Column(length = 10)
+    @NotEmpty(message = "Lastname is required")
     private String lastname;
 
-    @Column(length = 11)
+    @Min(value = 1, message = "Program is required")
     private Integer program_id;
 
-    @Column(length = 11)
+    @Min(value = 1, message = "Department is required")
     private Integer departement_id;
 
     public Students() {
