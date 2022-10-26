@@ -1,27 +1,33 @@
 package com.ibik.academic.academicservices.students;
 
 import java.io.Serializable;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Table(name = "students")
+import com.ibik.academic.academicservices.courses.Courses;
+import com.ibik.academic.academicservices.programstudy.ProgramStudy;
+import com.ibik.academic.academicservices.programs.Programs;
 
+@Entity
+@Table(name = "Students")
 public class Students implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private int id;
 
     @Column(length = 15)
     @NotEmpty(message = "NPM is required")
@@ -32,38 +38,46 @@ public class Students implements Serializable {
     private String firstname;
 
     @Column(length = 10)
+    @NotEmpty(message = "Middlename is required")
     private String middlename;
 
     @Column(length = 10)
     @NotEmpty(message = "Lastname is required")
     private String lastname;
 
-    @Min(value = 1, message = "Program is required")
-    private Integer program_id;
+    @ManyToOne
+    @JoinColumn(name = "program_id")
+    private Programs programs;
 
-    @Min(value = 1, message = "Department is required")
-    private Integer departement_id;
+    @ManyToOne
+    @JoinColumn(name = "departement_id")
+    private ProgramStudy programStudy;
+
+    @ManyToMany
+    @JoinTable(name = "student_rel_courses", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private Set<Courses> courses;
 
     public Students() {
     }
 
-    public Students(int id, String npm, String firstname, String middlename, String lastname, Integer program_id,
-            Integer departement_id) {
-        Id = id;
+    public Students(int id, String npm, String firstname, String middlename, String lastname, int program_id) {
+        this.id = id;
         this.npm = npm;
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;
-        this.program_id = program_id;
-        this.departement_id = departement_id;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public int getId() {
-        return Id;
+        return id;
     }
 
     public void setId(int id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getNpm() {
@@ -98,20 +112,27 @@ public class Students implements Serializable {
         this.lastname = lastname;
     }
 
-    public Integer getProgram_id() {
-        return program_id;
+    public Set<Courses> getCourses() {
+        return courses;
     }
 
-    public void setProgram_id(Integer program_id) {
-        this.program_id = program_id;
+    public void setCourses(Set<Courses> courses) {
+        this.courses = courses;
     }
 
-    public Integer getDepartement_id() {
-        return departement_id;
+    public Programs getPrograms() {
+        return programs;
     }
 
-    public void setDepartement_id(Integer departement_id) {
-        this.departement_id = departement_id;
+    public void setPrograms(Programs programs) {
+        this.programs = programs;
     }
 
+    public ProgramStudy getProgramStudy() {
+        return programStudy;
+    }
+
+    public void setProgramStudy(ProgramStudy programStudy) {
+        this.programStudy = programStudy;
+    }
 }

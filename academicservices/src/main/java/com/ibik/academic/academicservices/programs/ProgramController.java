@@ -88,26 +88,28 @@ public class ProgramController {
     @PutMapping
     public ResponseEntity<ResponseData<Programs>> updateProgram(@Valid @RequestBody Programs programs, Errors errors) {
         ResponseData<Programs> responseData = new ResponseData<>();
-        if (errors.hasErrors()) {
-            for (ObjectError error : errors.getAllErrors()) {
-                responseData.getMessage().add(error.getDefaultMessage());
+        if (programs.getId() != 0) {
+
+            if (errors.hasErrors()) {
+                for (ObjectError error : errors.getAllErrors()) {
+                    responseData.getMessage().add(error.getDefaultMessage());
+                }
+
+                responseData.setResult(false);
+                responseData.setData(null);
+
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
             }
-
-            responseData.setResult(false);
-            responseData.setData(null);
-
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
-        }
-        try {
             responseData.setResult(true);
             List<Programs> value = new ArrayList<>();
-            value.add(programsServices.update(programs));
+            value.add(programsServices.save(programs));
             responseData.setData(value);
 
             return ResponseEntity.ok(responseData);
-        } catch (Exception ex) {
-            responseData.getMessage().add("ID is Required");
+        } else {
             responseData.setResult(false);
+            responseData.getMessage().add("ID is Required");
+            responseData.setData(null);
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }

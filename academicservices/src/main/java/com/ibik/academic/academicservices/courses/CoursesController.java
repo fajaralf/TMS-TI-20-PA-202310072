@@ -1,4 +1,4 @@
-package com.ibik.academic.academicservices.programstudy;
+package com.ibik.academic.academicservices.courses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ibik.academic.academicservices.dto.ResponseData;
 
 @RestController
-@RequestMapping("/api/programstudy")
-
-public class ProgramStudyController {
+@RequestMapping("/api/courses")
+public class CoursesController {
 
     @Autowired
-    private ProgramStudyServices programstudyServices;
+    private CoursesServices coursesServices;
 
     @PostMapping
-    public ResponseEntity<ResponseData<ProgramStudy>> posProgramStudy(@Valid @RequestBody ProgramStudy programstudy,
-            Errors errors) {
-        ResponseData<ProgramStudy> responseData = new ResponseData<>();
+    public ResponseEntity<ResponseData<Courses>> postStudent(@Valid @RequestBody Courses courses, Errors errors) {
+
+        ResponseData<Courses> responseData = new ResponseData<>();
+
         if (errors.hasErrors()) {
             for (ObjectError error : errors.getAllErrors()) {
                 responseData.getMessage().add(error.getDefaultMessage());
@@ -45,18 +45,18 @@ public class ProgramStudyController {
         }
 
         responseData.setResult(true);
-        List<ProgramStudy> value = new ArrayList<>();
-        value.add(programstudyServices.save(programstudy));
+        List<Courses> value = new ArrayList<>();
+        value.add(coursesServices.save(courses));
         responseData.setData(value);
         return ResponseEntity.ok(responseData);
     }
 
     @GetMapping
-    public ResponseEntity<ResponseData<ProgramStudy>> fetchProgramStudy() {
-        ResponseData<ProgramStudy> responseData = new ResponseData<>();
+    public ResponseEntity<ResponseData<Courses>> fetchStudents() {
+        ResponseData<Courses> responseData = new ResponseData<>();
         try {
             responseData.setResult(true);
-            Iterable<ProgramStudy> value = programstudyServices.findAll();
+            List<Courses> value = (List<Courses>) coursesServices.findAll();
             responseData.setData(value);
 
             return ResponseEntity.ok(responseData);
@@ -69,12 +69,12 @@ public class ProgramStudyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponseData<ProgramStudy>> fetchProgramStudyById(@PathVariable("id") int id) {
-        ResponseData<ProgramStudy> responseData = new ResponseData<>();
+    public ResponseEntity<ResponseData<Courses>> fetchStudentsById(@PathVariable("id") int id) {
+        ResponseData<Courses> responseData = new ResponseData<>();
         try {
             responseData.setResult(true);
-            List<ProgramStudy> value = new ArrayList<>();
-            value.add(programstudyServices.findOne(id));
+            List<Courses> value = new ArrayList<>();
+            value.add(coursesServices.findOne(id));
             responseData.setData(value);
 
             return ResponseEntity.ok(responseData);
@@ -87,41 +87,38 @@ public class ProgramStudyController {
     }
 
     @PutMapping
-    public ResponseEntity<ResponseData<ProgramStudy>> updateProgramStudy(@Valid @RequestBody ProgramStudy programstudy,
-            Errors errors) {
-        ResponseData<ProgramStudy> responseData = new ResponseData<>();
-        if (programstudy.getId() != 0) {
+    public ResponseEntity<ResponseData<Courses>> updateStudent(@Valid @RequestBody Courses courses, Errors errors) {
+
+        ResponseData<Courses> responseData = new ResponseData<>();
+        if (courses.getId() != 0) {
             if (errors.hasErrors()) {
                 for (ObjectError error : errors.getAllErrors()) {
                     responseData.getMessage().add(error.getDefaultMessage());
                 }
-
                 responseData.setResult(false);
                 responseData.setData(null);
 
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
             }
-
             responseData.setResult(true);
-            List<ProgramStudy> value = new ArrayList<>();
-            value.add(programstudyServices.save(programstudy));
+            List<Courses> value = new ArrayList<>();
+            value.add(coursesServices.save(courses));
             responseData.setData(value);
 
             return ResponseEntity.ok(responseData);
         } else {
-            responseData.setResult(false);
             responseData.getMessage().add("ID is Required");
-            responseData.setData(null);
+            responseData.setResult(false);
 
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ResponseData<Void>> deleteProgramStudyById(@PathVariable("id") int id) {
+    public ResponseEntity<ResponseData<Void>> deleteStudentsById(@PathVariable("id") int id) {
         ResponseData<Void> responseData = new ResponseData<>();
         try {
-            programstudyServices.removeOne(id);
+            coursesServices.removeOne(id);
             responseData.setResult(true);
             responseData.getMessage().add("Successfully Remove");
 
@@ -133,5 +130,4 @@ public class ProgramStudyController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseData);
         }
     }
-
 }

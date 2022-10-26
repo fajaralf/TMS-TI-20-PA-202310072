@@ -17,16 +17,6 @@ public class ProgramServices {
         return programsRepo.save(programs);
     }
 
-    public Programs update(Programs programs) {
-        Programs result = findOne(programs.getId());
-
-        result.setName(programs.getName());
-        result.setDescription(programs.getDescription());
-        result.setIs_active(programs.isIs_active());
-
-        return result;
-    }
-
     public Programs findOne(int id) {
         return programsRepo.findById(id).get();
     }

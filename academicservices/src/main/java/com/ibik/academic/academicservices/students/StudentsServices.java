@@ -17,19 +17,6 @@ public class StudentsServices {
         return studentsRepo.save(students);
     }
 
-    public Students update(Students students) {
-        Students result = findOne(students.getId());
-
-        result.setFirstname(students.getFirstname());
-        result.setMiddlename(students.getMiddlename());
-        result.setLastname(students.getLastname());
-        result.setNpm(students.getNpm());
-        result.setProgram_id(students.getProgram_id());
-        result.setDepartement_id(students.getDepartement_id());
-
-        return result;
-    }
-
     public Students findOne(int id) {
         return studentsRepo.findById(id).get();
     }
