@@ -29,4 +29,8 @@ public class StudentsServices {
         studentsRepo.deleteById(id);
     }
 
+    public Iterable<Students> findByName(String name) {
+        return studentsRepo.findStudentByName("%" + name + "%");
+    }
+
 }
