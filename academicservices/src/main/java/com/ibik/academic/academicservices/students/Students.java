@@ -38,12 +38,19 @@ public class Students implements Serializable {
     private String firstname;
 
     @Column(length = 10)
-    @NotEmpty(message = "Middlename is required")
     private String middlename;
 
     @Column(length = 10)
     @NotEmpty(message = "Lastname is required")
     private String lastname;
+
+    @Column(length = 50)
+    @NotEmpty(message = "Email is required")
+    private String email;
+
+    @Column(columnDefinition = "DATE")
+    @NotEmpty(message = "Birthdate is required")
+    private String birth_date;
 
     @ManyToOne
     @JoinColumn(name = "program_id")
@@ -60,12 +67,15 @@ public class Students implements Serializable {
     public Students() {
     }
 
-    public Students(int id, String npm, String firstname, String middlename, String lastname, int program_id) {
+    public Students(int id, String npm, String firstname, String middlename, String lastname, String email,
+            String birth_date, int program_id) {
         this.id = id;
         this.npm = npm;
         this.firstname = firstname;
         this.middlename = middlename;
         this.lastname = lastname;
+        this.email = email;
+        this.birth_date = birth_date;
     }
 
     public static long getSerialversionuid() {
@@ -135,4 +145,25 @@ public class Students implements Serializable {
     public void setProgramStudy(ProgramStudy programStudy) {
         this.programStudy = programStudy;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getBirth_date() {
+        return birth_date;
+    }
+
+    public void setBirth_date(String birth_date) {
+        this.birth_date = birth_date;
+    }
+
+    public Object findByEmail(String email2) {
+        return null;
+    }
+
 }
