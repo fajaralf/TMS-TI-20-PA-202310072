@@ -1,4 +1,4 @@
-package com.config;
+package com.ibik.academic.academicservices.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
